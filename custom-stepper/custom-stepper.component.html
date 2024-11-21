@@ -1,0 +1,46 @@
+<section class="container" [style.flex-direction]="orientation === 'horizontal' ? 'column' : 'row'">
+    <div 
+    class="step-navigation-bar" 
+    [style.flex-direction]="orientation === 'horizontal' ? 'row' : 'column'"
+    [style.align-items]="'center'"
+    [style.max-height]="orientation === 'horizontal' ? '' : '305px'"
+    [style.overflow-y]="orientation === 'horizontal' ? '' : 'scroll'"
+    [style.overflow-x]="'hidden'"
+    [style.justify-content]="orientation === 'horizontal' ? 'space-around' : 'flex-start'"
+    style="display: flex;margin-right: 20px;"
+    >
+    <ng-container *ngFor="let step of steps; let i = index;let last = last">
+        <div style="display: flex;justify-content: center;align-items: center;" [style.height]="orientation == 'horizontal' ? '80px': 'auto'">
+            <button 
+            #tooltip="matTooltip" [matTooltip]="step.disabled ? step.tooltipDescription! : ''" 
+            (click)="tooltip.show()"
+            class="step" 
+            (click)="!step.disabled && onClick(i)"
+            [ngClass]="{'active': i <= selectedIndex}"
+            [class.step-highlight]="step.icon"
+            [style.background]="step.disabled ? '#0000002e': ''">
+                <fa-icon icon="lock" *ngIf="step.disabled && !step.icon"></fa-icon>
+            <img *ngIf="step.icon"
+            [src]="i <= initialIndex ? '../../../../assets/images/' + step.icon + '-white.svg' : '../../../../assets/images/' + step.icon + '.svg'" height="20" alt="ícone das etapas">
+        </button>
+    </div>
+    <div 
+        *ngIf="!last && orientation == 'horizontal'" 
+        style="flex: 1;height: 3px;" 
+        [style.background]="i < (selectedIndex) ? '#641fe7' : '#efefef'"
+    >
+    </div>
+    <span 
+        *ngIf="!last && orientation == 'vertical'" 
+        style="flex: 1;margin:5px 0;width: 3px;padding: 8% 0;" 
+        [style.background]="i < (selectedIndex) ? '#641fe7' : '#efefef'"
+    >
+    ﾠ
+    </span>
+</ng-container>
+</div>
+    
+    <div [style.display]="selected ? 'block' : 'none'" [style.max-width]="orientation == 'vertical' ? '80%' : ''">
+        <ng-container [ngTemplateOutlet]="selected ? selected.content : null"></ng-container>
+    </div>
+</section>
